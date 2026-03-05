@@ -129,7 +129,7 @@ async def init_db():
         await db.commit()
 
 #Bot
-TOKEN = '8267885107:AAGNjEtRr2GDjH97bNqSX8XPz3PXqE9JepQ'
+TOKEN = 'YOUR_TOKEN'
 dp = Dispatcher()
 
 @dp.message(CommandStart())
