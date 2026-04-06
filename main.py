@@ -20,7 +20,7 @@ def create_progress_bar(percentage: float):
     return "█" * filled + "░" * empty
 
 #Bot
-TOKEN = '8267885107:AAGNjEtRr2GDjH97bNqSX8XPz3PXqE9JepQ'
+TOKEN = 'YOUR_TOKEN'
 dp = Dispatcher()
 
 @dp.message(CommandStart())
