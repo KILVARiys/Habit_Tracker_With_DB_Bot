@@ -1,12 +1,13 @@
 # Habit Tracker Bot
 
-<img src="https://img.shields.io/badge/python-3.10+-blue.svg"> <img src="https://img.shields.io/badge/aiogram-3.x-green.svg"> <img src="https://img.shields.io/badge/database-sqlite-yellow.svg">
+<img src="https://img.shields.io/badge/python-3.10+-blue.svg"> <img src="https://img.shields.io/badge/aiogram-3.x-green.svg"> <img src="https://img.shields.io/badge/FastAPI-0.100+-orange.svg"> <img src="https://img.shields.io/badge/database-sqlite-yellow.svg"> <img src="https://img.shields.io/badge/API-REST-red.svg">
 
 Telegram бот для отслеживания привычек с визуализацией прогресса. Помогает формировать полезные привычки и отслеживать их выполнение день за днём.
 
 
 ## Возможности
 
+### Telegram Бот
 | Функция | Описание |
 |---------|----------|
 | **Добавление привычек** | Создайте список привычек, которые хотите отслеживать |
@@ -15,12 +16,38 @@ Telegram бот для отслеживания привычек с визуал
 | **Прогресс-бар** | Визуальное отображение прогресса в виде шкалы |
 | **Защита от дублей** | Нельзя отметить одну привычку дважды в день |
 
+### REST API
+| Метод | Эндпоинт | Описание |
+|-------|----------|----------|
+| **GET** | `/stats/{telegram_id}` | Получить статистику пользователя за неделю |
+| **POST** | `/habits` | Добавить новую привычку через JSON |
+| **Аутентификация** | Bearer Token | Защита API с помощью токена |
+
 ## Технологический стек
 
 - **Python 3.10+** - основной язык программирования
 - **Aiogram 3.x** - современный фреймворк для Telegram ботов
+- **FastAPI** - высокопроизводительный фреймворк для REST API
 - **aiosqlite** - асинхронная работа с SQLite
 - **asyncio** - асинхронное программирование
+- **Uvicorn** - ASGI сервер для запуска API
+
+## Структура проекта
+```
+Habit_Tracker_With_DB_Bot/
+├── main.py # Telegram бот (aiogram)
+├── api.py # REST API (FastAPI)
+├── database.py # Работа с базой данных
+├── run.py # Совместный запуск бота и API
+├── habits.db # SQLite база данных (создаётся автоматически)
+└── README.md # Документация проекта
+```
+
+## Безопасность
+
+- **API защищен Bearer токеном**
+- **Токен бота хранится в коде (рекомендуется вынести в .env для production)**
+- **База данных изолирована и не требует внешних подключений**
 
 ## Команды бота
 
@@ -64,9 +91,47 @@ Telegram бот для отслеживания привычек с визуал
 - Telegram аккаунт
 - Токен бота (получить у [@BotFather](https://t.me/botfather))
 
-### Пошаговая установка
+### Установка
 
 1. **Клонируйте репозиторий**
 ```bash
-git clone https://github.com/your-username/habit-tracker-bot.git
-cd habit-tracker-bot
+git clone https://github.com/KILVARiys/Habit_Tracker_With_DB_Bot.git
+cd Habit_Tracker_With_DB_Bot
+```
+2. **Установите зависимости**
+```bash
+pip install aiogram aiosqlite fastapi uvicorn
+```
+3. **Настройте токен бота**
+Откройте main.py и замените  на ваш токен:
+```
+TOKEN = 'YOUR_BOT_TOKEN_HERE'
+```
+4. **Настройте API токен (опционально)**
+В файле api.py измените токен для API:
+```
+API_TOKEN = "your_secret_api_token_here"
+```
+
+## Запуск
+
+### Вариант 1: Раздельный запуск (рекомендуется для разработки)
+**Терминал 1 - Запуск Telegram бота:**
+```bash
+python main.py
+```
+**Терминал 2 - Запуск REST API:**
+```bash
+uvicorn api:app --reload --port 8000
+```
+
+### Вариант 2: Совместный запуск
+```bash
+python run.py
+```
+
+## Интерактивная документация API
+**FastAPI автоматически генерирует документацию:**
+
+- **Swagger UI: http://localhost:8000/docs**
+- **ReDoc: http://localhost:8000/redoc**
